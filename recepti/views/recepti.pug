@@ -1,0 +1,178 @@
+doctype html
+head
+	meta(charset='UTF-8')
+	meta(name='viewport' content='width=device-width, initial-scale=1.0')
+	link(rel='icon' href='../images/pizza.jpg')
+	title My Recipes
+	link(rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css')
+	link(rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css')
+	script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js')
+	style.
+		@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap');
+		.comforta {
+		font-family: "Comfortaa", sans-serif;
+		}
+		body{
+		padding: 0px;
+		margin: 0px;
+		}
+		.fon{
+		height: 100%;
+		width: 100%;
+		position: absolute;
+		background-size: cover;
+		background-position: center;
+		opacity: 50%;
+		z-index: 2;
+		}
+		.fon2{
+		height: 100%;
+		width: 100%;
+		position: absolute;
+		background-size: cover;
+		background-position: center;
+		}
+.container.position-absolute.top-0.start-50.translate-middle-x.comforta(style='z-index: 3;')
+	.row.justify-content-center.rounded-3(style='background-color: #cab19b;')
+		.col-5.d-flex.align-items-center
+			if info
+				div.row.fs-4
+					div.row.ms-1= info
+					div.row
+						span
+							a.link-dark.me-2(href="") Reload
+							a.link-dark(href="logout")  Logout
+		.col-4.d-flex.align-items-center.fs-3
+			| My Recipes
+		.col.d-flex.justify-content-end
+			img.img-fluid.w-50(src="../images/pizza.png")
+	.row.mt-5.pt-3.px-3.rounded-3(style='background-color: #cab19b;')
+		.col
+			.row.mb-5
+				.col.d-flex.justify-content-start
+					button.btn.bg-success.text-white.fs-5(data-bs-toggle='modal' data-bs-target='#modalAdd') Add new recipe
+			.row
+				table.table-bordered.table.table-striped.table-hover#mytable
+					thead.text-center
+						tr.fs-4
+							td User
+							td Title 
+							td Image
+							td Ingridients
+							td Time for cooking
+							td Description
+							td Date added
+							td Action
+					tbody.text-center
+						each row in rows
+							tr.fs-5
+								td.col-1= row.user
+								td.col-1= row.title
+								td.col-2
+									img(src=row.img style="width: 100%;")
+								td.col-1= row.col_sustavki
+								td.col-2= row.vreme
+								td.col-2= row.opisanie
+								td.col-2= row.date_created
+								td.col-1
+									div.p-3
+										div.mb-1
+											a.btn.btn-info.edit(href="javascript:void(0);" data-id=row.id data-title=row.title data-img=row.img data-col_sustavki=row.col_sustavki data-vreme=row.vreme data-opisanie=row.opisanie) EDIT
+										div
+											a.btn.btn-danger.delete(href="javascript:void(0);" data-id=row.id) X
+
+.fon(style='background-image: url(../images/food.jpg);')
+.fon2(style='background-image: url(../images/back2.jpg);')
+
+
+			//modal form ADD - File upload
+			form(action="/upload" method="post" enctype="multipart/form-data")
+				div.modal.fade#modalAdd(tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true")
+					div.modal-dialog(role="document")
+						div.modal-content
+							div.modal-header
+								h5.modal-title#exampleModalLabel Add New Recipe
+								button.btn-close(type="button" data-bs-dismiss="modal" aria-label="Close")
+							div.modal-body
+								div.form-group
+									label.form-label.m-0(for='title') Title:
+									input#title.form-control(type='text' placeholder='Title' name="title" required)
+								div.form-group.mt-2
+									label.form-label.m-0(for='img') Image:
+									input#img.form-control(type="file" name="img")
+								div.form-group.mt-2
+									label.form-label.m-0(for='col_sustavki') Ingredients:
+									input#col_sustavki.form-control(type='text' placeholder='1 Tomato; 3 Potatoes; ...' name="col_sustavki" )
+								div.form-group.mt-2.col-4
+									label.form-label.m-0(for='vreme') Time for cooking: 
+									input#vreme.form-control(type='time' onfocus='this.showPicker()' name="vreme")
+								div.form-group.mt-2
+									label.form-label.m-0(for='opisanie') Description:
+									textarea#opisanie.form-control(placeholder='First: Put tomatoes and potatoes together...' name="opisanie" rows="2")
+							div.modal-footer
+								button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Cancel
+								button.btn.btn-success(type="submit") Save
+
+			//modal form DELETE
+			form#add-row-form(action="/delete" method="post")
+				div.modal.fade#DeleteModal(tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true")
+					div.modal-dialog
+						div.modal-content
+							div.modal-header
+								h5.modal-title#modalLabel Delete Confirmation
+								button.btn-close(type="button" data-bs-dismiss="modal" aria-label="Close")
+							div.modal-body
+								strong Are you sure to delete this recipe?
+							div.modal-footer
+								input.form-control.id(type="hidden" name="id" required)
+								button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Cancel
+								button.btn.btn-danger(type="submit") Delete
+
+			//modal form EDIT/UPDATE
+			form(action="/update" method="post")
+				div.modal.fade#EditModal(tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true")
+					div.modal-dialog(role="document")
+						div.modal-content
+							div.modal-header
+								h5.modal-title#modalLabel Edit Recipe
+								button.btn-close(type="button" data-bs-dismiss="modal" aria-label="Close")
+							div.modal-body
+								div.form-group
+									label.form-label.m-0(for='title') Title:
+									input#title.form-control.title(type='text'  name="title")
+								div.form-group.mt-2
+									label.form-label.m-0(for='col_sustavki') Ingredients:
+									input#col_sustavki.form-control(type='text'  name="col_sustavki" )
+								div.form-group.mt-2.col-4
+									label.form-label.m-0(for='vreme') Time for cooking: 
+									input#vreme.form-control(type='time' onfocus='this.showPicker()' name="vreme")
+								div.form-group.mt-2
+									label.form-label.m-0(for='opisanie') Description:
+									textarea#opisanie.form-control( name="opisanie" rows="2")
+							div.modal-footer
+								input.form-control.id(type="hidden" name="id" required)
+								button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Cancel
+								button.btn.btn-info(type="submit") Update
+
+			script(src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js")
+			script.
+				$(document).ready(function(){
+
+					//showing modal form DELETE
+					$('#mytable').on('click','.delete',function(){
+						$('#DeleteModal').modal('show');
+						$('.id').val($(this).data('id'));
+					});
+
+					//showing modal form EDIT
+					$('#mytable').on('click','.edit',function(){
+						$('#EditModal').modal('show');
+						$('.id').val($(this).data('id'));
+						$('.title').val($(this).data('title'));
+						
+						$('#EditModal input[name="col_sustavki"]').val($(this).data('col_sustavki'));
+						$('#EditModal input[name="vreme"]').val($(this).data('vreme'));
+						$('#EditModal textarea[name="opisanie"]').val($(this).data('opisanie'));
+					});
+				});
+

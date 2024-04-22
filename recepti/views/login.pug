@@ -1,0 +1,62 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  link(rel='icon' href='../images/pizza.jpg')
+  title Log In
+  link(rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css')
+  link(rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css')
+  script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js')
+  style.
+    @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Comfortaa:wght@300..700&display=swap');
+    .comforta {
+    font-family: "Comfortaa", sans-serif;
+    }
+    .caveat {
+    font-family: "Caveat", cursive;
+    }
+    body{
+    padding: 0px;
+    margin: 0px;
+    }
+    .fon{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-size: cover;
+    background-position: center;
+    opacity: 45%;
+    z-index: 2;
+    }
+    .fon2{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-size: cover;
+    background-position: center;
+    }
+.container.position-absolute.top-50.start-50.translate-middle.comforta(style='z-index: 3;')
+  .row.d-flex.justify-content-center
+    .col-5.rounded-4.p-2(style='background-color: #e9d4c1;')
+      .text-center
+        p.fs-4
+          | A place for all your culinary recipes.
+      .text-center.fs-5
+        if info
+          p.bg-info-subtle=info
+        if warn
+          p.bg-warning-subtle #{warn}
+      .row.d-flex.justify-content-center
+        .col-10.col-xxl-8.rounded-4.p-3.fs-5(style='background-color: #d1b7a0;')
+          form(method="post")
+            div
+              label.form-label.m-0(for='name') Username:
+              input#name.form-control(type='text' placeholder='Username' name="username" )
+            .mt-3
+              label.form-label.m-0(for='pass') Password:
+              input#pass.form-control(type='password' placeholder='Password' name="password" )
+            .d-grid.mt-3
+              input.btn.btn-success(type='submit' value='Login' )
+.fon(style='background-image: url(../images/back.jpg);')
+.fon2(style='background-image: url(../images/back2.jpg);')
